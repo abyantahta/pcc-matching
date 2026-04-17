@@ -371,6 +371,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="flex w-full gap-2 md:gap-16 md:mb-4">
+                    <div class="w-1/2">
+                        <div class="">
+                            <label for="lot_no_fg" class="form-label md:text-xl text-xs font-bold">LOT NO FG</label>
+                            <input type="text" class="form-control form-input h-6 text-sm md:h-8 md:text-base"
+                                id="lot_no_fg" name="lot_no_fg" value="{{ session('lot_no_fg') }}" disabled>
+                        </div>
+                    </div>
+                </div>
                 {{-- <div class="row">
                         <div class="">
                             <div class="">
@@ -419,6 +428,7 @@
                     <th class="text-center">Status</th>
                     <th class="text-center">Part No PCC</th>
                     <th class="text-center">Part No FG</th>
+                    <th class="text-center">Lot No FG</th>
                     <th class="text-center">Created At</th>
                     {{-- <th class="text-center">DN Status</th>
                     <th class="text-center">Order Kbn</th>
@@ -495,6 +505,9 @@
                     {
                         data: 'part_no_fg',
                         orderable: false
+                    },
+                    {
+                        data: 'lot_no'
                     },
                     {
                         data: 'created_at'

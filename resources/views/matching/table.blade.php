@@ -63,6 +63,7 @@
             <th class="text-center">Part No PCC</th>
             <th class="text-center">Part No FG</th>
             <th class="text-center">Seq Label FG</th>
+            <th class="text-center">Lot No FG</th>
             <th class="text-center">Matching Date</th>
         </tr>
         {{-- {{ dd($transactions) }} --}}
@@ -74,6 +75,7 @@
                 <td class="text-center">{{ $transaction->part_no_pcc }}</td>
                 <td class="text-center">{{ $transaction->part_no_fg }}</td>
                 <td class="text-center">{{ $transaction->seq_fg }}</td>
+                <td class="text-center">{{ $transaction->lot_no }}</td>
                 <td class="text-center">{{ $transaction->created_at }}</td>
                 
             </tr>

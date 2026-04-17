@@ -108,22 +108,25 @@ class MatchingController extends Controller
             return redirect()->back()->with('message', $input . '(L:' . strlen($input) . ') SILAHKAN SCAN BARCODE FG.');
         }
 
-            $pattern = '/^\d{5}-\d[A-Z]\d-[A-Z0-9]{4}-[A-Z0-9]{2}\d{3}$/';
-        if (preg_match($pattern, $input)) {
+        $fgBarcodeParts = explode('#', $input);
+        if (count($fgBarcodeParts) === 4) {
 
             $tempData = Session::get('temp_data');
             // dd($input);
             if (!$tempData) {
                 return redirect()->back()->withErrors('SCAN BARCODE CUSTOMER SEBELUM BARCODE FG.');
             }
-            $part_no = substr($input, 0, 17);   // Extract "BX-yyyy"
-            $fg_seq = substr($input, -3);     // Extract "zzz"
+            [$part_no, $_jobNo, $fg_seq, $lot_no] = $fgBarcodeParts;
+            $part_no = trim($part_no);
+            $fg_seq = trim($fg_seq);
+            $lot_no = trim($lot_no);
 
 
             Session::flash('barcode_fg', $input);
             Session::flash('part_no_fg', $part_no);
             // Session::flash('part_name_fg', $part_no);
             Session::flash('no_seq_fg', $fg_seq);
+            Session::flash('lot_no_fg', $lot_no);
             // dd($tempData);
             // Compare no_job from Data1 and no_job_fg from Data2
             // dd($tempData);
@@ -133,6 +136,7 @@ class MatchingController extends Controller
                 $transaction->part_no_pcc = $tempData['part_no'];
                 $transaction->part_no_fg = $part_no;
                 $transaction->seq_fg = $fg_seq;
+                $transaction->lot_no = $lot_no;
                 $transaction->del_date = $tempData['del_date'];
                 $transaction->status = 'mismatch';
                 $transaction->created_at = Carbon::now();
@@ -176,6 +180,7 @@ Segera datang ke line.',
             $transaction->part_no_pcc = $tempData['part_no'];
             $transaction->part_no_fg = $part_no;
             $transaction->seq_fg = $fg_seq;
+            $transaction->lot_no = $lot_no;
             $transaction->del_date = $tempData['del_date'];
             $transaction->status = 'match';
             $transaction->created_at = now();
@@ -224,6 +229,7 @@ Segera datang ke line.',
         Session::forget('barcode_fg');
         Session::forget('part_no_fg');
         Session::forget('no_seq_fg');
+        Session::forget('lot_no_fg');
 
         // Redirect kembali ke halaman input dengan pesan
         return redirect()->back()->with('message-reset', 'Session has been reset.');
